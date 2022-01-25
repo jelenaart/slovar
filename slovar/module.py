@@ -1,4 +1,4 @@
-from random import *
+import random
 def failist_lugemine(f:str,l:list):
     """Info failist f listisse l
     """
@@ -24,45 +24,59 @@ def ridasalv(f:str,rida:str):
     fail.write(rida+'\n')
     fail.close()
 
+def translate(eesti:list,english:list):
+    tolk=input("Palun kirjutage sõna, mida te soovite tõlkida: ")
+    if tolk in eesti:
+        tolk=english[eesti.index(tolk)]
+        print(tolk+"-"+tolk)
+    elif tolk in english:
+        tolk=eesti[english.index(tolk)]
+        print(tolk+"-"+tolk)
+    else:
+        print("Midagi on valesti. Võib olla seda sõna pole veel lisatud!")
 
-def viga():
-    print("not done")
 
-def translate():
-    print("not done")
+def viga(tolk:str,l:list):
+    for i in range(len(l)):
+        if l[i]==tolk:
+            uus_sona=tolk.replace(tolk,input("Uus sona"))
+            l.insert(i,uus_sona)
+            l.remove(tolk)
+    return l
 
-def engest(f:str,eesti:list):
-   while True:
-       try:
-           word=input("What word would you like to translate?")
-           if word in english:
-               #
-            if word in estonian:
-                print("Tundub et see on eesti sõna. Soovite avada teist sõnastikut ning tõlkida seda inglise keele? 1-jah; 2-ei")
-                if valik==1:
-                    esteng()
-                if valik==2:
-                    break
+def heli(text:str,keel:str):
+	obj=gTTS(text=text,lang=keel,slow=False).save("heli.mp3")
+	os.system("heli.mp3")
 
-def esteng(english:list,eesti:list):
-    while True:
-        try:
-            word=input("Mis sona soovite tolkida?")
-           if word in english:
-                print("Tundub et see on eesti sõna. Soovite avada teist sõnastikut ning tõlkida seda inglise keele? 1-jah; 2-ei")
-                if valik==1:
-                    engest()
-                if valik==2:
-                    break
-            if word in estonian:
-                #
-        except ValueError:
-            print("Try again")
                
 
-def uussona(f:str,rida:str)->list:
+def uussona(l:str,f:str,rida:str)->list:
     l=[]
     with open(f,"a",encoding="utf-8-sig") as fail:
         fail.write(rida+"\n")
         l=failist_lugemine(f)
         return l
+
+def kontrol(eesti:list,english:list):
+    l=[]
+    l.extend(eesti)
+    l.extend(english)
+    random.shuffle(l)
+    print("Kontrolli oma teadmusi",l)
+    p=False
+    for i in range(len(eesti)):
+        print(eesti)
+        vastus=input("Palun tõlgi sõna ")
+        if vastus.isalpha():
+            p=True
+        if vastus in eesti or english:
+            p=True
+        if l[i] in eesti:
+            if eesti.index(l[i])==english(vastus):
+                print("Oled tubli")
+        elif l[i] in english:
+            if english.index(l[i])==eesti(vastus):
+                 print("Oled tubli")
+        else:
+            print("Midagi on vale")
+    return p
